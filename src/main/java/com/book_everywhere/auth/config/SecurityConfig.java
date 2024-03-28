@@ -1,6 +1,10 @@
 package com.book_everywhere.auth.config;
 
+import com.book_everywhere.auth.jwt.JWTFilter;
+import com.book_everywhere.auth.jwt.JWTUtil;
 import com.book_everywhere.auth.service.CustomOAuth2UserService;
+import com.book_everywhere.oauth2.CustomSuccessHandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,7 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
@@ -19,13 +25,13 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomSuccessHandler customSuccessHandler;
+    private final JWTUtil jwtUtil;
 
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService) {
-        this.customOAuth2UserService = customOAuth2UserService;
-    }
 
     @Bean
     public BCryptPasswordEncoder encoder() {
@@ -37,7 +43,6 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        // 또는 패턴을 사용하여 출처 지정
         config.setAllowedOriginPatterns(Arrays.asList("https://*.bookeverywhere.site","http://localhost:3000"));
         config.setAllowCredentials(true); // 크리덴셜 허용
         config.addAllowedHeader("*");
@@ -51,12 +56,13 @@ public class SecurityConfig {
 
         http
                 .sessionManagement(sessionManagement ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
+                .addFilterBefore(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class)
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers(new MvcRequestMatcher(introspector, "/")).permitAll()
                         .requestMatchers(new MvcRequestMatcher(introspector, "/health")).permitAll()
@@ -67,16 +73,14 @@ public class SecurityConfig {
                         .requestMatchers(new MvcRequestMatcher(introspector, "/api/map")).permitAll()
                         .requestMatchers(new MvcRequestMatcher(introspector, "/api/tags")).permitAll()
                         .requestMatchers(new MvcRequestMatcher(introspector, "/api/data/**")).permitAll()
-                        .requestMatchers(new MvcRequestMatcher(introspector, "/api/**")).hasRole("MEMBER")
+                        .requestMatchers(new MvcRequestMatcher(introspector, "/api/**")).hasAuthority("ROLE_MEMBER")
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2Login ->
                         oauth2Login
                                 .userInfoEndpoint(userInfoEndpointConfig ->
                                         userInfoEndpointConfig.userService(customOAuth2UserService))
-                                .successHandler((request, response, authentication) -> {
-                                    response.sendRedirect("https://www.bookeverywhere.site");
-                                }))
+                                .successHandler(customSuccessHandler))
         ;
         return http.build();
     }

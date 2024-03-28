@@ -1,6 +1,7 @@
 package com.book_everywhere.auth.dto;
 
 import com.book_everywhere.auth.entity.Role;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -8,16 +9,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+@RequiredArgsConstructor
 public class CustomOAuth2User implements OAuth2User {
 
     private final OAuthAttributes oAuthAttributes;
     private final Role role;
-
-    public CustomOAuth2User(OAuthAttributes oAuth2Attributes, Role role) {
-
-        this.oAuthAttributes = oAuth2Attributes;
-        this.role = role;
-    }
 
     @Override
     public Map<String, Object> getAttributes() {
