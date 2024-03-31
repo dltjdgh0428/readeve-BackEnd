@@ -1,5 +1,6 @@
 package com.book_everywhere.jwt.controller;
 
+import com.book_everywhere.auth.entity.Role;
 import com.book_everywhere.jwt.dto.RefreshDto;
 import com.book_everywhere.jwt.service.RefreshService;
 import com.book_everywhere.jwt.token.JwtProvider;
@@ -65,7 +66,7 @@ public class RefreshController {
 
 
         String username = jwtProvider.getUsername(refresh);
-        String role = jwtProvider.getRole(refresh);
+        Role role = jwtProvider.getRole(refresh);
 
         //make new JWT
         String newAccess = jwtProvider.createJwt(ACCESS.getType(), username, role, ACCESS.getExpirationTime());

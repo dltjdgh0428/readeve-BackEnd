@@ -41,7 +41,7 @@ public class JwtFilter extends OncePerRequestFilter {
         //토큰에서 username과 role 획득
         UserDto userDto = new UserDto();
         userDto.setNickname(jwtProvider.getUsername(accessToken));
-        userDto.setRole(Role.valueOf(jwtProvider.getRole(accessToken)));
+        userDto.setRole(jwtProvider.getRole(accessToken));
 
         //UserDetails에 회원 정보 객체 담기
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDto);

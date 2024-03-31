@@ -1,6 +1,7 @@
 package com.book_everywhere.jwt.filter;
 
 import com.book_everywhere.auth.dto.CustomOAuth2User;
+import com.book_everywhere.auth.entity.Role;
 import com.book_everywhere.jwt.dto.RefreshDto;
 import com.book_everywhere.jwt.service.RefreshService;
 import com.book_everywhere.jwt.token.JwtProvider;
@@ -8,6 +9,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,6 +28,7 @@ import static com.book_everywhere.jwt.token.TokenType.REFRESH;
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(CustomSuccessHandler.class);
     private final JwtProvider jwtProvider;
     private final RefreshService refreshService;
 
@@ -39,7 +43,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
-        String role = auth.getAuthority();
+        Role role = Role.valueOf(auth.getAuthority());
+        logger.debug("------------------------");
+        logger.debug("Role: {}", role);
+        logger.debug("------------------------");
 
         String access = jwtProvider.createJwt(ACCESS.getType(), username, role, ACCESS.getExpirationTime());
         String refresh = jwtProvider.createJwt(REFRESH.getType(), username, role, REFRESH.getExpirationTime());
