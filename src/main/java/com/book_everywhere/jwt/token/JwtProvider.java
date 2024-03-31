@@ -42,7 +42,7 @@ public class JwtProvider {
     }
 
     public String createJwt(String category, String username, Role role, Long expiredMs) {
-        String jwt = Jwts.builder()
+        return Jwts.builder()
                 .claim("category", category)
                 .claim("username", username)
                 .claim("role", role.toString())
@@ -50,11 +50,6 @@ public class JwtProvider {
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))
                 .signWith(secretKey)
                 .compact();
-
-        // 생성된 JWT를 로그에 출력
-        System.out.println("Created JWT: " + jwt);
-
-        return jwt;
     }
 
     public Cookie createCookie(String key, String value) {
@@ -62,7 +57,7 @@ public class JwtProvider {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(24 * 60 * 60);
         //cookie.setSecure(true);
-//        cookie.setPath("/");
+        cookie.setPath("/");
         cookie.setHttpOnly(true);
 
         return cookie;
