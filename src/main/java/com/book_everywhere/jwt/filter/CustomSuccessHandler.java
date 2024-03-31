@@ -43,14 +43,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
-        logger.debug("------------------------");
-        logger.info("auth.getAuthority(): {}", auth.getAuthority());
-        logger.debug("------------------------");
         Role role = Role.valueOf(auth.getAuthority());
-
-        logger.debug("------------------------");
-        logger.debug("Role: {}", role);
-        logger.debug("------------------------");
 
         String access = jwtProvider.createJwt(ACCESS.getType(), username, role, ACCESS.getExpirationTime());
         String refresh = jwtProvider.createJwt(REFRESH.getType(), username, role, REFRESH.getExpirationTime());
