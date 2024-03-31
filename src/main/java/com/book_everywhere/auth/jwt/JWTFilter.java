@@ -1,6 +1,7 @@
 package com.book_everywhere.auth.jwt;
 
 import com.book_everywhere.auth.dto.CustomOAuth2User;
+import com.book_everywhere.auth.dto.UserDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -58,12 +59,13 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         //토큰에서 username과 role 획득
-        String username = jwtUtil.getUsername(token);
-        String role = jwtUtil.getRole(token);
+        UserDto userDto = new UserDto();
+        userDto.setNickname(jwtUtil.getUsername(token));
+        userDto.setRole(jwtUtil.getRole(token));
 
 
         //UserDetails에 회원 정보 객체 담기
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(username, role);
+        CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDto);
 
         //스프링 시큐리티 인증 토큰 생성
         Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());

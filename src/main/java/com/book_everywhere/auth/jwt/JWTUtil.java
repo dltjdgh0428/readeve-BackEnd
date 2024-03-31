@@ -1,6 +1,7 @@
 package com.book_everywhere.auth.jwt;
 
 
+import com.book_everywhere.auth.entity.Role;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -24,8 +25,8 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
     }
 
-    public String getRole(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
+    public Role getRole(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", Role.class);
     }
 
     public Boolean isExpired(String token) {

@@ -2,6 +2,7 @@ package com.book_everywhere.auth.service;
 
 import com.book_everywhere.auth.dto.CustomOAuth2User;
 import com.book_everywhere.auth.dto.OAuthAttributes;
+import com.book_everywhere.auth.dto.UserDto;
 import com.book_everywhere.auth.entity.Role;
 import com.book_everywhere.auth.entity.User;
 import com.book_everywhere.auth.repository.UserRepository;
@@ -47,9 +48,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         User user = saveOrUpdate(attributes);
         httpSession.setAttribute("user", user);
+        UserDto userDto = new UserDto();
+        userDto.setNickname(user.getNickname());
+        userDto.setRole(userDto.getRole());
 
 
-        return new CustomOAuth2User(attributes,user.getRole());
+        return new CustomOAuth2User(userDto);
     }
 
     /**

@@ -52,7 +52,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
                 .sessionManagement(sessionManagement ->
@@ -64,16 +64,18 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class)
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                        .requestMatchers(new MvcRequestMatcher(introspector, "/")).permitAll()
-                        .requestMatchers(new MvcRequestMatcher(introspector, "/health")).permitAll()
-                        .requestMatchers(new MvcRequestMatcher(introspector, "/env")).permitAll()
-                        .requestMatchers(new MvcRequestMatcher(introspector, "/test/**")).permitAll()
-                        .requestMatchers(new MvcRequestMatcher(introspector, "/swagger-ui/**")).permitAll()
-                        .requestMatchers(new MvcRequestMatcher(introspector, "/api/review")).permitAll()
-                        .requestMatchers(new MvcRequestMatcher(introspector, "/api/map")).permitAll()
-                        .requestMatchers(new MvcRequestMatcher(introspector, "/api/tags")).permitAll()
-                        .requestMatchers(new MvcRequestMatcher(introspector, "/api/data/**")).permitAll()
-                        .requestMatchers(new MvcRequestMatcher(introspector, "/api/**")).hasAuthority("ROLE_MEMBER")
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers( "/login").permitAll()
+                        .requestMatchers( "/health").permitAll()
+                        .requestMatchers( "/env").permitAll()
+                        .requestMatchers( "/test/**").permitAll()
+                        .requestMatchers( "/swagger-ui/**").permitAll()
+                        .requestMatchers("/api/review").permitAll()
+                        .requestMatchers("/api/map").permitAll()
+                        .requestMatchers("/api/tags").permitAll()
+                        .requestMatchers( "/api/data/**").permitAll()
+                        .requestMatchers( "/api/**").hasAuthority("ROLE_MEMBER")
+                        .requestMatchers( "/admin").hasAuthority("ROLE_MEMBER")
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2Login ->
