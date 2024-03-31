@@ -1,9 +1,11 @@
 package com.book_everywhere.auth.config;
 
-import com.book_everywhere.auth.jwt.JWTFilter;
-import com.book_everywhere.auth.jwt.JWTUtil;
+import com.book_everywhere.jwt.filter.CustomLogoutFilter;
+import com.book_everywhere.jwt.filter.JwtFilter;
+import com.book_everywhere.jwt.service.RefreshService;
+import com.book_everywhere.jwt.token.JwtProvider;
 import com.book_everywhere.auth.service.CustomOAuth2UserService;
-import com.book_everywhere.oauth2.CustomSuccessHandler;
+import com.book_everywhere.jwt.filter.CustomSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,10 +16,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
@@ -30,7 +30,8 @@ public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
-    private final JWTUtil jwtUtil;
+    private final JwtProvider jwtProvider;
+    private final RefreshService refreshService;
 
 
     @Bean
@@ -62,27 +63,24 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .addFilterBefore(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/").permitAll()
-                        .requestMatchers( "/login").permitAll()
-                        .requestMatchers( "/health").permitAll()
-                        .requestMatchers( "/env").permitAll()
-                        .requestMatchers( "/test/**").permitAll()
-                        .requestMatchers( "/swagger-ui/**").permitAll()
-                        .requestMatchers("/api/review").permitAll()
-                        .requestMatchers("/api/map").permitAll()
-                        .requestMatchers("/api/tags").permitAll()
-                        .requestMatchers( "/api/data/**").permitAll()
-                        .requestMatchers( "/api/**").hasAuthority("ROLE_MEMBER")
-                        .requestMatchers( "/admin").hasAuthority("ROLE_MEMBER")
+                        // 테스트 관련 url
+                        .requestMatchers("/health","/env","/test/**","/swagger-ui/**").permitAll()
+                        // 비회원도 볼수있는 url
+                        .requestMatchers("/api/review","/api/map","/api/tags","/api/data/**").permitAll()
+                        // 나머지
+                        .requestMatchers("/api/**").hasAuthority("ROLE_MEMBER")
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2Login ->
                         oauth2Login
                                 .userInfoEndpoint(userInfoEndpointConfig ->
                                         userInfoEndpointConfig.userService(customOAuth2UserService))
-                                .successHandler(customSuccessHandler))
+                                .successHandler(customSuccessHandler)
+                )
+                .addFilterBefore(new CustomLogoutFilter(jwtProvider, refreshService), LogoutFilter.class)
         ;
         return http.build();
     }

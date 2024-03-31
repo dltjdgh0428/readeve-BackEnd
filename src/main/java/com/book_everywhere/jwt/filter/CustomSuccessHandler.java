@@ -1,12 +1,14 @@
-package com.book_everywhere.oauth2;
+package com.book_everywhere.jwt.filter;
 
 import com.book_everywhere.auth.dto.CustomOAuth2User;
-import com.book_everywhere.auth.jwt.JWTUtil;
+import com.book_everywhere.jwt.dto.RefreshDto;
+import com.book_everywhere.jwt.service.RefreshService;
+import com.book_everywhere.jwt.token.JwtProvider;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -16,11 +18,15 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static com.book_everywhere.jwt.token.TokenType.ACCESS;
+import static com.book_everywhere.jwt.token.TokenType.REFRESH;
+
 @RequiredArgsConstructor
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final JWTUtil jwtUtil;
+    private final JwtProvider jwtProvider;
+    private final RefreshService refreshService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -35,20 +41,17 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(username, role, 60*60*60L);
+        String access = jwtProvider.createJwt(ACCESS.getType(), username, role, ACCESS.getExpirationTime());
+        String refresh = jwtProvider.createJwt(REFRESH.getType(), username, role, REFRESH.getExpirationTime());
 
-        response.addCookie(createCookie("Authorization", token));
-        response.sendRedirect("http://localhost:3000/");
+        refreshService.리프레시토큰생성(new RefreshDto(username, refresh, String.valueOf(REFRESH.getExpirationTime())));
+
+
+//        response.addCookie(jwtProvider.createCookie("Authorization", refresh));
+//        response.sendRedirect("http://localhost:3000/");
+        response.setHeader(ACCESS.getType(), access);
+        response.addCookie(jwtProvider.createCookie(REFRESH.getType(), refresh));
+        response.setStatus(HttpStatus.OK.value());
     }
 
-    private Cookie createCookie(String key, String value) {
-
-        Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60*60*60);
-        //cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-
-        return cookie;
-    }
 }

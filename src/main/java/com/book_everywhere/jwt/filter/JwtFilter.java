@@ -1,7 +1,9 @@
-package com.book_everywhere.auth.jwt;
+package com.book_everywhere.jwt.filter;
 
 import com.book_everywhere.auth.dto.CustomOAuth2User;
 import com.book_everywhere.auth.dto.UserDto;
+import com.book_everywhere.auth.entity.Role;
+import com.book_everywhere.jwt.token.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -16,9 +18,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class JWTFilter extends OncePerRequestFilter {
+public class JwtFilter extends OncePerRequestFilter {
 
-    private final JWTUtil jwtUtil;
+    private final JwtProvider jwtProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -49,7 +51,7 @@ public class JWTFilter extends OncePerRequestFilter {
         String token = authorization;
 
         //토큰 소멸 시간 검증
-        if (jwtUtil.isExpired(token)) {
+        if (jwtProvider.isExpired(token)) {
 
             System.out.println("token expired");
             filterChain.doFilter(request, response);
@@ -60,8 +62,8 @@ public class JWTFilter extends OncePerRequestFilter {
 
         //토큰에서 username과 role 획득
         UserDto userDto = new UserDto();
-        userDto.setNickname(jwtUtil.getUsername(token));
-        userDto.setRole(jwtUtil.getRole(token));
+        userDto.setNickname(jwtProvider.getUsername(token));
+        userDto.setRole(Role.valueOf(jwtProvider.getRole(token)));
 
 
         //UserDetails에 회원 정보 객체 담기
