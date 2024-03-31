@@ -6,11 +6,8 @@ build/
 !**/src/test/**/build/
 
 src/main/resources/*.yml
-!application.yml
 src/test/resources/*.yml
-!application.yml
-
-
+src/main/resources/templates/*.html
 
 ### STS ###
 .apt_generated

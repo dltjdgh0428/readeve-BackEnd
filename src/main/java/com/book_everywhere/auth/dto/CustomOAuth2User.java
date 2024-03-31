@@ -1,6 +1,5 @@
 package com.book_everywhere.auth.dto;
 
-import com.book_everywhere.auth.entity.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -10,18 +9,15 @@ import java.util.Map;
 
 public class CustomOAuth2User implements OAuth2User {
 
-    private final OAuthAttributes oAuthAttributes;
-    private final Role role;
+    private final UserDto userDto;
 
-    public CustomOAuth2User(OAuthAttributes oAuth2Attributes, Role role) {
-
-        this.oAuthAttributes = oAuth2Attributes;
-        this.role = role;
+    public CustomOAuth2User(UserDto userDto) {
+        this.userDto = userDto;
     }
 
     @Override
     public Map<String, Object> getAttributes() {
-        return oAuthAttributes.getAttributes();
+        return null;
     }
 
     @Override
@@ -32,7 +28,7 @@ public class CustomOAuth2User implements OAuth2User {
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return String.valueOf(role);
+                return String.valueOf(userDto.getRole());
             }
         });
 
@@ -42,7 +38,7 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
-        return oAuthAttributes.getNickname();
+        return userDto.getNickname();
     }
 
 
