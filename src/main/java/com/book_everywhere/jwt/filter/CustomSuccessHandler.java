@@ -28,7 +28,6 @@ import static com.book_everywhere.jwt.token.TokenType.REFRESH;
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(CustomSuccessHandler.class);
     private final JwtProvider jwtProvider;
     private final RefreshService refreshService;
 
