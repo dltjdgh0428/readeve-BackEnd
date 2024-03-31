@@ -1,8 +1,9 @@
-package com.book_everywhere.jwt.service;
+package com.book_everywhere.jwt.service.impl;
 
 import com.book_everywhere.jwt.domain.Refresh;
 import com.book_everywhere.jwt.dto.RefreshDto;
 import com.book_everywhere.jwt.repository.RefreshRepository;
+import com.book_everywhere.jwt.service.RefreshService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,8 @@ public class RefreshServiceImpl implements RefreshService {
     private final RefreshRepository refreshRepository;
 
     @Override
-    public void 리프레시토큰삭제(String refresh) {
-        refreshRepository.deleteByRefresh(refresh);
+    public void 리프레시토큰삭제(String username) {
+        refreshRepository.deleteByUsername(username);
     }
 
     @Override

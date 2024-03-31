@@ -34,14 +34,16 @@ public class JwtProvider {
     public String getRole(String token) {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
     }
+
     public String getCategory(String token) {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category", String.class);
     }
+
     public Boolean isExpired(String token) {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-    public String createJwt(String category, String username, String role, Long expiredMs)  {
+    public String createJwt(String category, String username, String role, Long expiredMs) {
         return Jwts.builder()
                 .claim("category", category)
                 .claim("username", username)
@@ -51,12 +53,13 @@ public class JwtProvider {
                 .signWith(secretKey)
                 .compact();
     }
+
     public Cookie createCookie(String key, String value) {
 
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(24 * 60 * 60);
         //cookie.setSecure(true);
-        //cookie.setPath("/");
+        cookie.setPath("/");
         cookie.setHttpOnly(true);
 
         return cookie;

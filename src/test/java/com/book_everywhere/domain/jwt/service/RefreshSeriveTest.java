@@ -23,7 +23,7 @@ class RefreshServiceTest {
     private RefreshRepository refreshRepository;
 
     @Test
-    @DisplayName("리프레시 토큰 생성 테스트")
+    @DisplayName("Service_리프레시 토큰 생성 테스트")
     void 리프레시토큰생성_테스트() {
         RefreshDto refreshDto = new RefreshDto("ID", "token",String.valueOf(1000L)); // 1000L은 토큰 만료 시간
         given(refreshRepository.save(any())).willReturn(any());
@@ -36,7 +36,7 @@ class RefreshServiceTest {
     }
 
     @Test
-    @DisplayName("리프레시 토큰 조회 테스트")
+    @DisplayName("Service_리프레시 토큰 조회 테스트")
     void 리프레시토큰조회_테스트() {
         // Given
         String refreshToken = "token";
@@ -50,16 +50,18 @@ class RefreshServiceTest {
     }
 
     @Test
-    @DisplayName("리프레시 토큰 삭제 테스트")
+    @DisplayName("Service_리프레시 토큰 삭제 테스트")
     void 리프레시토큰삭제_테스트() {
         // Given
-        String refreshToken = "token";
+        RefreshDto refreshDto = new RefreshDto("ID", "token",String.valueOf(1000L)); // 1000L은 토큰 만료 시간
+        given(refreshRepository.save(any())).willReturn(any());
 
         // When
-        refreshService.리프레시토큰삭제(refreshToken);
+        refreshService.리프레시토큰생성(refreshDto);
+        refreshService.리프레시토큰삭제(refreshDto.getUsername());
 
         // Then
-        verify(refreshRepository).deleteByRefresh(refreshToken);
+        verify(refreshRepository).deleteByUsername(refreshDto.getUsername());
         // 삭제 메소드가 해당 토큰으로 호출되었는지 확인
     }
 }
