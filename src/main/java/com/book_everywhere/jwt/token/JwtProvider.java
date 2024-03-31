@@ -14,11 +14,11 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-@RequiredArgsConstructor
 @Component
 public class JwtProvider {
 
     private final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
+
     private SecretKey secretKey;
 
     public JwtProvider(@Value("${app.jwt.secret}") String secret) {
