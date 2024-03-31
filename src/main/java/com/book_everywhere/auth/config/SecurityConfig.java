@@ -79,6 +79,7 @@ public class SecurityConfig {
                                 .userInfoEndpoint(userInfoEndpointConfig ->
                                         userInfoEndpointConfig.userService(customOAuth2UserService))
                                 .successHandler(customSuccessHandler)
+
                 )
                 .addFilterBefore(new CustomLogoutFilter(jwtProvider, refreshService), LogoutFilter.class)
         ;
