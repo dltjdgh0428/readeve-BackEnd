@@ -1,5 +1,6 @@
 package com.book_everywhere.jwt.token;
 
+import com.book_everywhere.auth.entity.Role;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
@@ -13,11 +14,11 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-@RequiredArgsConstructor
 @Component
 public class JwtProvider {
 
     private final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
+
     private SecretKey secretKey;
 
     public JwtProvider(@Value("${app.jwt.secret}") String secret) {
@@ -28,8 +29,8 @@ public class JwtProvider {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
     }
 
-    public String getRole(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
+    public Role getRole(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", Role.class);
     }
 
     public String getCategory(String token) {
@@ -40,15 +41,20 @@ public class JwtProvider {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-    public String createJwt(String category, String username, String role, Long expiredMs) {
-        return Jwts.builder()
+    public String createJwt(String category, String username, Role role, Long expiredMs) {
+        String jwt = Jwts.builder()
                 .claim("category", category)
                 .claim("username", username)
-                .claim("role", role)
+                .claim("role", role.toString())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))
                 .signWith(secretKey)
                 .compact();
+
+        // 생성된 JWT를 로그에 출력
+        System.out.println("Created JWT: " + jwt);
+
+        return jwt;
     }
 
     public Cookie createCookie(String key, String value) {
