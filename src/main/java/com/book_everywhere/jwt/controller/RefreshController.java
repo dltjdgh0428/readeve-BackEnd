@@ -14,6 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.book_everywhere.jwt.token.TokenType.ACCESS;
+import static com.book_everywhere.jwt.token.TokenType.REFRESH;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +32,7 @@ public class RefreshController {
         String refresh = null;
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(TokenType.REFRESH.getType())) {
+            if (cookie.getName().equals(REFRESH.getType())) {
                 refresh = cookie.getValue();
             }
         }
@@ -51,7 +54,7 @@ public class RefreshController {
         // 토큰이 refresh인지 확인 (발급시 페이로드에 명시)
         String category = jwtProvider.getCategory(refresh);
 
-        if (!category.equals(TokenType.REFRESH.getType())) {
+        if (!category.equals(REFRESH.getType())) {
             return new CMRespDto<>(HttpStatus.BAD_REQUEST, null, "invalid refresh token");
         }
 
@@ -65,15 +68,15 @@ public class RefreshController {
         String role = jwtProvider.getRole(refresh);
 
         //make new JWT
-        String newAccess = jwtProvider.createJwt(TokenType.ACCESS.getType(), username, role, TokenType.ACCESS.getExpirationTime());
-        String newRefresh = jwtProvider.createJwt(TokenType.REFRESH.getType(), username, role, TokenType.REFRESH.getExpirationTime());
+        String newAccess = jwtProvider.createJwt(ACCESS.getType(), username, role, ACCESS.getExpirationTime());
+        String newRefresh = jwtProvider.createJwt(REFRESH.getType(), username, role, REFRESH.getExpirationTime());
 
-        refreshService.리프레시토큰삭제(username);
-        refreshService.리프레시토큰생성(new RefreshDto(username, newRefresh, String.valueOf(TokenType.REFRESH.getExpirationTime())));
+        refreshService.리프레시토큰삭제(refresh);
+        refreshService.리프레시토큰생성(new RefreshDto(username, newRefresh, REFRESH.getExpirationTime()));
 
         //response
-        response.setHeader(TokenType.ACCESS.getType(), newAccess);
-        response.addCookie(jwtProvider.createCookie(TokenType.REFRESH.getType(), newRefresh));
+        response.setHeader(ACCESS.getType(), newAccess);
+        response.addCookie(jwtProvider.createCookie(REFRESH.getType(), newRefresh));
 
         return new CMRespDto<>(HttpStatus.OK, null, "재발급 완료");
     }

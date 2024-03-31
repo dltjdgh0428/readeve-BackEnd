@@ -44,13 +44,13 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String access = jwtProvider.createJwt(ACCESS.getType(), username, role, ACCESS.getExpirationTime());
         String refresh = jwtProvider.createJwt(REFRESH.getType(), username, role, REFRESH.getExpirationTime());
 
-        refreshService.리프레시토큰생성(new RefreshDto(username, refresh, String.valueOf(REFRESH.getExpirationTime())));
-
+        refreshService.리프레시토큰생성(new RefreshDto(username, refresh, REFRESH.getExpirationTime()));
 
 //        response.addCookie(jwtProvider.createCookie("Authorization", refresh));
 //        response.sendRedirect("http://localhost:3000/");
         response.setHeader(ACCESS.getType(), access);
         response.addCookie(jwtProvider.createCookie(REFRESH.getType(), refresh));
+        response.sendRedirect("https://www.bookeverywhere.site/");
         response.setStatus(HttpStatus.OK.value());
     }
 

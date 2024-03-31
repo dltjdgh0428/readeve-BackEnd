@@ -13,7 +13,7 @@ import java.util.Date;
 public class RefreshDto {
     private String username;
     private String refresh;
-    private String expiredMs;
+    private Long expiredMs;
 
     public Refresh toEntity(Date date) {
         return Refresh.builder()
@@ -27,7 +27,7 @@ public class RefreshDto {
         return RefreshDto.builder()
                 .username(refresh.getUsername())
                 .refresh(refresh.getRefresh())
-                .expiredMs(refresh.getExpiration())
+                .expiredMs(Long.parseLong(refresh.getExpiration()))
                 .build();
     }
 }
