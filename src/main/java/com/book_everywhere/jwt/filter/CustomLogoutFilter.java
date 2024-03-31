@@ -12,6 +12,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import static com.book_everywhere.jwt.token.TokenType.REFRESH;
 
 @RequiredArgsConstructor
+@Component
 public class CustomLogoutFilter extends GenericFilterBean {
 
     private final JwtProvider jwtProvider;

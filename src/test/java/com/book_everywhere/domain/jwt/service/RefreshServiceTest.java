@@ -1,10 +1,5 @@
 package com.book_everywhere.domain.jwt.service;
 
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
-
 import com.book_everywhere.jwt.dto.RefreshDto;
 import com.book_everywhere.jwt.repository.RefreshRepository;
 import com.book_everywhere.jwt.service.RefreshService;
@@ -12,9 +7,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class RefreshServiceTest {
+@Transactional
+public class RefreshServiceTest {
 
     @Autowired
     private RefreshService refreshService;
@@ -25,7 +27,7 @@ class RefreshServiceTest {
     @Test
     @DisplayName("Service_리프레시 토큰 생성 테스트")
     void 리프레시토큰생성_테스트() {
-        RefreshDto refreshDto = new RefreshDto("ID", "token",String.valueOf(1000L)); // 1000L은 토큰 만료 시간
+        RefreshDto refreshDto = new RefreshDto("ID", "token", String.valueOf(1000L)); // 1000L은 토큰 만료 시간
         given(refreshRepository.save(any())).willReturn(any());
 
         // When
@@ -53,7 +55,7 @@ class RefreshServiceTest {
     @DisplayName("Service_리프레시 토큰 삭제 테스트")
     void 리프레시토큰삭제_테스트() {
         // Given
-        RefreshDto refreshDto = new RefreshDto("ID", "token",String.valueOf(1000L)); // 1000L은 토큰 만료 시간
+        RefreshDto refreshDto = new RefreshDto("ID", "token", String.valueOf(1000L)); // 1000L은 토큰 만료 시간
         given(refreshRepository.save(any())).willReturn(any());
 
         // When
@@ -64,4 +66,6 @@ class RefreshServiceTest {
         verify(refreshRepository).deleteByUsername(refreshDto.getUsername());
         // 삭제 메소드가 해당 토큰으로 호출되었는지 확인
     }
+
+
 }
