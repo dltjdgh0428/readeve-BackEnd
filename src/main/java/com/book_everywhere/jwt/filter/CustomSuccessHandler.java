@@ -43,7 +43,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
+        logger.info("Role: {}", auth.getAuthority());
         Role role = Role.valueOf(auth.getAuthority());
+
         logger.debug("------------------------");
         logger.debug("Role: {}", role);
         logger.debug("------------------------");
