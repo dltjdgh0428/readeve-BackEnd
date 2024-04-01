@@ -47,10 +47,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String refresh = jwtProvider.createJwt(REFRESH.getType(), username, role, REFRESH.getExpirationTime());
         refreshService.리프레시토큰생성(new RefreshDto(username, refresh, REFRESH.getExpirationTime()));
 
-
         response.setHeader(ACCESS.getType(), access);
+        response.addCookie(jwtProvider.createCookie(ACCESS.getType(), access));
         response.addCookie(jwtProvider.createCookie(REFRESH.getType(), refresh));
         response.sendRedirect("https://www.bookeverywhere.site/");
     }
-
 }
