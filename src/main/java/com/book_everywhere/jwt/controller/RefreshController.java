@@ -66,18 +66,18 @@ public class RefreshController {
 
 
         String username = jwtProvider.getUsername(refresh);
-        Role role = jwtProvider.getRole(refresh);
+        String role = jwtProvider.getRole(refresh);
 
         //make new JWT
-        String newAccess = jwtProvider.createJwt(ACCESS.getType(), username, role, ACCESS.getExpirationTime());
-        String newRefresh = jwtProvider.createJwt(REFRESH.getType(), username, role, REFRESH.getExpirationTime());
-
-        refreshService.리프레시토큰삭제(refresh);
-        refreshService.리프레시토큰생성(new RefreshDto(username, newRefresh, REFRESH.getExpirationTime()));
-
-        //response
-        response.setHeader(ACCESS.getType(), newAccess);
-        response.addCookie(jwtProvider.createCookie(REFRESH.getType(), newRefresh));
+//        String newAccess = jwtProvider.createJwt(ACCESS.getType(), username, role, ACCESS.getExpirationTime());
+//        String newRefresh = jwtProvider.createJwt(REFRESH.getType(), username, role, REFRESH.getExpirationTime());
+//
+//        refreshService.리프레시토큰삭제(refresh);
+//        refreshService.리프레시토큰생성(new RefreshDto(username, newRefresh, REFRESH.getExpirationTime()));
+//
+//        //response
+//        response.setHeader(ACCESS.getType(), newAccess);
+//        response.addCookie(jwtProvider.createCookie(REFRESH.getType(), newRefresh));
 
         return new CMRespDto<>(HttpStatus.OK, null, "재발급 완료");
     }

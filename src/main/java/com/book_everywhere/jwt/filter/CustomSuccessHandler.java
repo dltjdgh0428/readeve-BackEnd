@@ -42,20 +42,18 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
-        Role role = Role.valueOf(auth.getAuthority());
+        String role = auth.getAuthority();
 
-        String access = jwtProvider.createJwt(ACCESS.getType(), username, role, ACCESS.getExpirationTime());
-        String refresh = jwtProvider.createJwt(REFRESH.getType(), username, role, REFRESH.getExpirationTime());
+//        String access = jwtProvider.createJwt(ACCESS.getType(), username, role, ACCESS.getExpirationTime());
+//        String refresh = jwtProvider.createJwt(REFRESH.getType(), username, role, REFRESH.getExpirationTime());
+        String token = jwtProvider.createJwt(username, role, REFRESH.getExpirationTime());
+//        refreshService.리프레시토큰생성(new RefreshDto(username, refresh, REFRESH.getExpirationTime()));
 
-        refreshService.리프레시토큰생성(new RefreshDto(username, refresh, REFRESH.getExpirationTime()));
 
-
-//        response.sendRedirect("http://localhost:3000/");
-
-        response.sendRedirect("https://www.bookeverywhere.site/");
-        response.setHeader(ACCESS.getType(), access);
-        response.addCookie(jwtProvider.createCookie("Authorization", refresh));
+//        response.setHeader(ACCESS.getType(), access);
 //        response.addCookie(jwtProvider.createCookie(REFRESH.getType(), refresh));
+        response.addCookie(jwtProvider.createCookie("Authorization", token));
+        response.sendRedirect("https://www.bookeverywhere.site/");
         response.setStatus(HttpStatus.OK.value());
     }
 

@@ -51,7 +51,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         httpSession.setAttribute("user", user);
         UserDto userDto = new UserDto();
         userDto.setNickname(user.getNickname());
-        userDto.setRole(user.getRole());
+        userDto.setRole(String.valueOf(user.getRole()));
 
         return new CustomOAuth2User(userDto);
     }
