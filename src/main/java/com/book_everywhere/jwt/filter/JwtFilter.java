@@ -28,7 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //여기서 헤더가 access인
         String accessToken = request.getHeader(ACCESS.getType());
-
+        logger.info(request);
 
 //        String accessToken = null;
 //        Cookie[] cookies = request.getCookies();
@@ -53,14 +53,14 @@ public class JwtFilter extends OncePerRequestFilter {
 //            }
 //        }
 
-        if (accessToken == null) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        if (!validateToken(response, accessToken)) {
-            return;
-        }
+//        if (accessToken == null) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+//
+//        if (!validateToken(response, accessToken)) {
+//            return;
+//        }
 
         //토큰에서 username과 role 획득
         UserDto userDto = new UserDto();
