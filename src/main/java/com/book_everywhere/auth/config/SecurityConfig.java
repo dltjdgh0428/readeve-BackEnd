@@ -63,7 +63,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .addFilterAfter(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
+//                .addFilterAfter(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
 //                .addFilterBefore(new CustomLogoutFilter(jwtProvider, refreshService), LogoutFilter.class)
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/").permitAll()
