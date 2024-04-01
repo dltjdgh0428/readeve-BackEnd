@@ -27,28 +27,31 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //여기서 헤더가 access인
-        String accessToken = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
-            // 쿠키가 없음을 처리하는 로직
+        String accessToken = request.getHeader(ACCESS.getType());
+
+
+//        String accessToken = null;
+//        Cookie[] cookies = request.getCookies();
+//        if (cookies == null) {
+//            // 쿠키가 없음을 처리하는 로직
+//            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
             logger.info("@@@@@@@@@@@@@@@@@@@@@@");
             logger.info("@@@@@@@@@@@@@@@@@@@@@@");
-            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
-            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
-            logger.info("쿠키없다는데? 왜없냐 ㄹㅇ");
-            filterChain.doFilter(request, response);
-            return;
-        }
-        for (Cookie cookie : cookies) {
-            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
-            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
-            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
-            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
-            logger.info(cookie);
-            if (cookie.getName().equals(ACCESS.getType())) {
-                accessToken = cookie.getValue();
-            }
-        }
+            logger.info(accessToken);
+//            logger.info("쿠키없다는데? 왜없냐 ㄹㅇ");
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+//        for (Cookie cookie : cookies) {
+//            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
+//            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
+//            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
+//            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
+//            logger.info(cookie);
+//            if (cookie.getName().equals(ACCESS.getType())) {
+//                accessToken = cookie.getValue();
+//            }
+//        }
 
         if (accessToken == null) {
             filterChain.doFilter(request, response);

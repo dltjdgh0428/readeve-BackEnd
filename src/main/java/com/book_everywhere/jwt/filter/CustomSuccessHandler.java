@@ -51,5 +51,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.addCookie(jwtProvider.createCookie(ACCESS.getType(), access));
         response.addCookie(jwtProvider.createCookie(REFRESH.getType(), refresh));
         response.sendRedirect("https://www.bookeverywhere.site/");
+        response.setStatus(HttpStatus.OK.value());
     }
 }
