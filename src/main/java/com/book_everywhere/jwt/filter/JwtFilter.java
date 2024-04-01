@@ -30,8 +30,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         //여기서 엑세스를 받아야함
+
+
 //        String accessToken = request.getHeader(ACCESS.getType());
 //
 //        if (accessToken == null) {
