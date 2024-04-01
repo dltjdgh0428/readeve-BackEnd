@@ -33,7 +33,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-
         //OAuth2User
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
@@ -44,17 +43,14 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-//        String access = jwtProvider.createJwt(ACCESS.getType(), username, role, ACCESS.getExpirationTime());
-//        String refresh = jwtProvider.createJwt(REFRESH.getType(), username, role, REFRESH.getExpirationTime());
-        String token = jwtProvider.createJwt(username, role, REFRESH.getExpirationTime());
-//        refreshService.리프레시토큰생성(new RefreshDto(username, refresh, REFRESH.getExpirationTime()));
+        String access = jwtProvider.createJwt(ACCESS.getType(), username, role, ACCESS.getExpirationTime());
+        String refresh = jwtProvider.createJwt(REFRESH.getType(), username, role, REFRESH.getExpirationTime());
+        refreshService.리프레시토큰생성(new RefreshDto(username, refresh, REFRESH.getExpirationTime()));
 
 
-//        response.setHeader(ACCESS.getType(), access);
-//        response.addCookie(jwtProvider.createCookie(REFRESH.getType(), refresh));
-        response.addCookie(jwtProvider.createCookie("Authorization", token));
+        response.setHeader(ACCESS.getType(), access);
+        response.addCookie(jwtProvider.createCookie(REFRESH.getType(), refresh));
         response.sendRedirect("https://www.bookeverywhere.site/");
-        response.setStatus(HttpStatus.OK.value());
     }
 
 }

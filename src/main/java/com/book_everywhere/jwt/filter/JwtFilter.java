@@ -26,75 +26,22 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String requestUri = request.getRequestURI();
+        //여기서 헤더가 access인
+        String accessToken = request.getHeader(ACCESS.getType());
 
-        if (requestUri.matches("^\\/login(?:\\/.*)?$")) {
-
+        if (accessToken == null) {
             filterChain.doFilter(request, response);
             return;
         }
-        if (requestUri.matches("^\\/oauth2(?:\\/.*)?$")) {
 
-            filterChain.doFilter(request, response);
-            return;
-        }
-        String authorization = null;
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-
-            if (cookie.getName().equals("Authorization")) {
-
-                authorization = cookie.getValue();
-            }
-        }
-
-        //Authorization 헤더 검증
-        if (authorization == null) {
-
-            System.out.println("token null");
-            filterChain.doFilter(request, response);
-
-            //조건이 해당되면 메소드 종료 (필수)
-            return;
-        }
-
-        //토큰
-        String token = authorization;
-
-        if (jwtProvider.isExpired(token)) {
-
-            System.out.println("token expired");
-            filterChain.doFilter(request, response);
-
-            //조건이 해당되면 메소드 종료 (필수)
+        if (!validateToken(response, accessToken)) {
             return;
         }
 
         //토큰에서 username과 role 획득
-        String username = jwtProvider.getUsername(token);
-        String role = jwtProvider.getRole(token);
-
-        //userDTO를 생성하여 값 set
         UserDto userDto = new UserDto();
-        userDto.setNickname(username);
-        userDto.setRole(role);
-
-
-        //        String accessToken = request.getHeader(ACCESS.getType());
-//
-//        if (accessToken == null) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
-//
-//        if (!validateToken(response, accessToken)) {
-//            return;
-//        }
-//
-//        //토큰에서 username과 role 획득
-//        UserDto userDto = new UserDto();
-//        userDto.setNickname(jwtProvider.getUsername(accessToken));
-//        userDto.setRole(jwtProvider.getRole(accessToken));
+        userDto.setNickname(jwtProvider.getUsername(accessToken));
+        userDto.setRole(jwtProvider.getRole(accessToken));
 
         //UserDetails에 회원 정보 객체 담기
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDto);
