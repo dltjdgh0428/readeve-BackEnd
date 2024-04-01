@@ -63,7 +63,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .addFilterBefore(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
+                .addFilterAfter(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/").permitAll()
                         // 테스트 관련 url
