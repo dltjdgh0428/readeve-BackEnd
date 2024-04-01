@@ -81,8 +81,8 @@ public class SecurityConfig {
                                 .userInfoEndpoint(userInfoEndpointConfig ->
                                         userInfoEndpointConfig.userService(customOAuth2UserService))
                                 .successHandler(customSuccessHandler)
-                                .redirectionEndpoint(redirectionEndpointConfig ->
-                                        redirectionEndpointConfig.baseUri("https://www.bookeverywhere.site/oauth2/authorization/kakao"))
+//                                .redirectionEndpoint(redirectionEndpointConfig ->
+//                                        redirectionEndpointConfig.baseUri("https://www.bookeverywhere.site/oauth2/authorization/kakao"))
 
                 )
 
