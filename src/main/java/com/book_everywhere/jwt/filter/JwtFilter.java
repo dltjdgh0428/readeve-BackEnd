@@ -30,8 +30,50 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //여기서 엑세스를 받아야함
+        //여기서 나중에 front에서 엑세스토큰을 받아야함
+        //cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾음
+        String authorization = null;
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
 
+            System.out.println(cookie.getName());
+            if (cookie.getName().equals("Authorization")) {
+
+                authorization = cookie.getValue();
+            }
+        }
+
+
+
+        //Authorization 헤더 검증
+        if (authorization == null) {
+
+            System.out.println("token null");
+            filterChain.doFilter(request, response);
+
+            //조건이 해당되면 메소드 종료 (필수)
+            return;
+        }
+
+        //토큰
+        String token = authorization;
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println(token);
+        System.out.println(jwtProvider.getRole(token));
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@");
+        //토큰 소멸 시간 검증
+        if (jwtProvider.isExpired(token)) {
+
+            System.out.println("token expired");
+            filterChain.doFilter(request, response);
+
+            //조건이 해당되면 메소드 종료 (필수)
+            return;
+        }
+
+        //토큰에서 username과 role 획득
+        String username = jwtProvider.getUsername(token);
+        Role role = jwtProvider.getRole(token);
 
 //        String accessToken = request.getHeader(ACCESS.getType());
 //
@@ -48,45 +90,6 @@ public class JwtFilter extends OncePerRequestFilter {
 //        UserDto userDto = new UserDto();
 //        userDto.setNickname(jwtProvider.getUsername(accessToken));
 //        userDto.setRole(jwtProvider.getRole(accessToken));
-
-        //cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾음
-        String authorization = null;
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-
-            System.out.println(cookie.getName());
-            if (cookie.getName().equals("Authorization")) {
-
-                authorization = cookie.getValue();
-            }
-        }
-
-        //Authorization 헤더 검증
-        if (authorization == null) {
-
-            System.out.println("token null");
-            filterChain.doFilter(request, response);
-
-            //조건이 해당되면 메소드 종료 (필수)
-            return;
-        }
-
-        //토큰
-        String token = authorization;
-
-        //토큰 소멸 시간 검증
-        if (jwtProvider.isExpired(token)) {
-
-            System.out.println("token expired");
-            filterChain.doFilter(request, response);
-
-            //조건이 해당되면 메소드 종료 (필수)
-            return;
-        }
-
-        //토큰에서 username과 role 획득
-        String username = jwtProvider.getUsername(token);
-        Role role = jwtProvider.getRole(token);
 
         //userDTO를 생성하여 값 set
         UserDto userDto = new UserDto();

@@ -30,7 +30,8 @@ public class JwtProvider {
     }
 
     public Role getRole(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", Role.class);
+        String role = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
+        return Role.valueOf(role);
     }
 
     public String getCategory(String token) {
