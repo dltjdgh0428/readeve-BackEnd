@@ -30,25 +30,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //여기서 엑세스를 받아야함
-
-
-//        String accessToken = request.getHeader(ACCESS.getType());
-//
-//        if (accessToken == null) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
-//
-//        if (!validateToken(response, accessToken)) {
-//            return;
-//        }
-//
-//        //토큰에서 username과 role 획득
-//        UserDto userDto = new UserDto();
-//        userDto.setNickname(jwtProvider.getUsername(accessToken));
-//        userDto.setRole(jwtProvider.getRole(accessToken));
-
+        //여기서 나중에 front에서 엑세스토큰을 받아야함
         //cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾음
         String authorization = null;
         Cookie[] cookies = request.getCookies();
@@ -87,6 +69,22 @@ public class JwtFilter extends OncePerRequestFilter {
         //토큰에서 username과 role 획득
         String username = jwtProvider.getUsername(token);
         Role role = jwtProvider.getRole(token);
+
+//        String accessToken = request.getHeader(ACCESS.getType());
+//
+//        if (accessToken == null) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+//
+//        if (!validateToken(response, accessToken)) {
+//            return;
+//        }
+//
+//        //토큰에서 username과 role 획득
+//        UserDto userDto = new UserDto();
+//        userDto.setNickname(jwtProvider.getUsername(accessToken));
+//        userDto.setRole(jwtProvider.getRole(accessToken));
 
         //userDTO를 생성하여 값 set
         UserDto userDto = new UserDto();
