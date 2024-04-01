@@ -63,8 +63,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .addFilterAfter(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
-//                .addFilterBefore(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
+//                .addFilterAfter(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
                 .addFilterBefore(new CustomLogoutFilter(jwtProvider, refreshService), LogoutFilter.class)
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/").permitAll()
@@ -78,14 +78,13 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth2Login ->
                         oauth2Login
+                                .successHandler(customSuccessHandler)
                                 .userInfoEndpoint(userInfoEndpointConfig ->
                                         userInfoEndpointConfig.userService(customOAuth2UserService))
-                                .successHandler(customSuccessHandler)
-//                                .redirectionEndpoint(redirectionEndpointConfig ->
-//                                        redirectionEndpointConfig.baseUri("https://www.bookeverywhere.site/oauth2/authorization/kakao"))
+                                .redirectionEndpoint(redirectionEndpointConfig ->
+                                        redirectionEndpointConfig.baseUri("https://api.bookeverywhere.site/oauth2/authorization/kakao"))
 
                 )
-
         ;
         return http.build();
     }
