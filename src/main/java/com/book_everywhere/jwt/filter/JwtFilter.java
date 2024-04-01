@@ -30,20 +30,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //여기서 나중에 front에서 엑세스토큰을 받아야함
-        //cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾음
         String authorization = null;
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
 
-            System.out.println(cookie.getName());
             if (cookie.getName().equals("Authorization")) {
 
                 authorization = cookie.getValue();
             }
         }
-
-
 
         //Authorization 헤더 검증
         if (authorization == null) {
@@ -57,11 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         //토큰
         String token = authorization;
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@");
-        System.out.println(token);
-        System.out.println(jwtProvider.getRole(token));
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@");
-        //토큰 소멸 시간 검증
+
         if (jwtProvider.isExpired(token)) {
 
             System.out.println("token expired");
@@ -73,9 +64,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
         //토큰에서 username과 role 획득
         String username = jwtProvider.getUsername(token);
-        Role role = jwtProvider.getRole(token);
+        String role = jwtProvider.getRole(token);
 
-//        String accessToken = request.getHeader(ACCESS.getType());
+        //userDTO를 생성하여 값 set
+        UserDto userDto = new UserDto();
+        userDto.setNickname(username);
+        userDto.setRole(role);
+
+
+        //        String accessToken = request.getHeader(ACCESS.getType());
 //
 //        if (accessToken == null) {
 //            filterChain.doFilter(request, response);
@@ -90,16 +87,6 @@ public class JwtFilter extends OncePerRequestFilter {
 //        UserDto userDto = new UserDto();
 //        userDto.setNickname(jwtProvider.getUsername(accessToken));
 //        userDto.setRole(jwtProvider.getRole(accessToken));
-
-        //userDTO를 생성하여 값 set
-        UserDto userDto = new UserDto();
-        userDto.setNickname(username);
-        userDto.setRole(role);
-
-        logger.info("JWT 필터 인증 절차 ");
-        logger.info("JWT 필터 인증 절차 ");
-        logger.info("이곳은 앞의 헤더를 인증하여 세션에 사용자를 등록해줍니다. ");
-        logger.info(String.valueOf(userDto));
 
         //UserDetails에 회원 정보 객체 담기
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDto);
