@@ -1,9 +1,7 @@
 package com.book_everywhere.jwt.token;
 
-import com.book_everywhere.auth.entity.Role;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.Cookie;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
