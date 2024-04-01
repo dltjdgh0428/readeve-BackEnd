@@ -43,6 +43,8 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
+
+
         //Authorization 헤더 검증
         if (authorization == null) {
 
@@ -55,7 +57,10 @@ public class JwtFilter extends OncePerRequestFilter {
 
         //토큰
         String token = authorization;
-
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println(token);
+        System.out.println(jwtProvider.getRole(token));
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@");
         //토큰 소멸 시간 검증
         if (jwtProvider.isExpired(token)) {
 
