@@ -27,7 +27,14 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //여기서 헤더가 access인
-        String accessToken = request.getHeader(ACCESS.getType());
+        String accessToken = null;
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            logger.info(cookies);
+            if (cookie.getName().equals("access")) {
+                accessToken = cookie.getValue();
+            }
+        }
 
         if (accessToken == null) {
             filterChain.doFilter(request, response);
