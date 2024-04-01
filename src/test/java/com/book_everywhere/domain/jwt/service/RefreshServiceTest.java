@@ -27,7 +27,7 @@ public class RefreshServiceTest {
     @Test
     @DisplayName("Service_리프레시 토큰 생성 테스트")
     void 리프레시토큰생성_테스트() {
-        RefreshDto refreshDto = new RefreshDto("ID", "token", String.valueOf(1000L)); // 1000L은 토큰 만료 시간
+        RefreshDto refreshDto = new RefreshDto("ID", "token",1000L); // 1000L은 토큰 만료 시간
         given(refreshRepository.save(any())).willReturn(any());
 
         // When
@@ -55,7 +55,7 @@ public class RefreshServiceTest {
     @DisplayName("Service_리프레시 토큰 삭제 테스트")
     void 리프레시토큰삭제_테스트() {
         // Given
-        RefreshDto refreshDto = new RefreshDto("ID", "token", String.valueOf(1000L)); // 1000L은 토큰 만료 시간
+        RefreshDto refreshDto = new RefreshDto("ID", "token", 1000L); // 1000L은 토큰 만료 시간
         given(refreshRepository.save(any())).willReturn(any());
 
         // When
