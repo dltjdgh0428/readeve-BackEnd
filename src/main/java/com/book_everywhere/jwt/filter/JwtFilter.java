@@ -53,14 +53,14 @@ public class JwtFilter extends OncePerRequestFilter {
 //            }
 //        }
 
-        if (accessToken == null) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        if (!validateToken(response, accessToken)) {
-            return;
-        }
+//        if (accessToken == null) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+//
+//        if (!validateToken(response, accessToken)) {
+//            return;
+//        }
 
         //토큰에서 username과 role 획득
         UserDto userDto = new UserDto();
