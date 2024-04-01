@@ -44,7 +44,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(Arrays.asList("https://*.bookeverywhere.site","http://localhost:3000"));
+        config.setAllowedOriginPatterns(Arrays.asList("https://*.bookeverywhere.site", "http://localhost:3000"));
         config.setAllowCredentials(true); // 크리덴셜 허용
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
@@ -63,15 +63,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-//                .addFilterAfter(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
-                .addFilterBefore(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
-//                .addFilterBefore(new CustomLogoutFilter(jwtProvider, refreshService), LogoutFilter.class)
+                .addFilterAfter(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
+//                .addFilterBefore(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
+                .addFilterBefore(new CustomLogoutFilter(jwtProvider, refreshService), LogoutFilter.class)
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/").permitAll()
                         // 테스트 관련 url
-                        .requestMatchers("/health","/env","/test/**","/swagger-ui/**").permitAll()
+                        .requestMatchers("/health", "/env", "/test/**", "/swagger-ui/**").permitAll()
                         // 비회원도 볼수있는 url
-                        .requestMatchers("/api/review","/api/map","/api/tags","/api/data/**").permitAll()
+                        .requestMatchers("/api/review", "/api/map", "/api/tags", "/api/data/**").permitAll()
                         // 나머지
                         .requestMatchers("/api/**").hasAuthority("ROLE_MEMBER")
                         .anyRequest().authenticated()
