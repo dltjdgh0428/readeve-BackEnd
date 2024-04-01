@@ -53,14 +53,15 @@ public class JwtFilter extends OncePerRequestFilter {
 //            }
 //        }
 
-//        if (accessToken == null) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
+        if (accessToken == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 //
-//        if (!validateToken(response, accessToken)) {
-//            return;
-//        }
+        if (!validateToken(response, accessToken)) {
+            logger.info("validateToken,validateToken,validateToken");
+            return;
+        }
 
         //토큰에서 username과 role 획득
         UserDto userDto = new UserDto();
@@ -80,12 +81,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private boolean validateToken(HttpServletResponse response, String accessToken) throws IOException {
         try {
-            if (jwtProvider.isExpired(accessToken) || !ACCESS.getType().equals(jwtProvider.getCategory(accessToken))) {
+            if (jwtProvider.isExpired(accessToken) ) {//|| !ACCESS.getType().equals(jwtProvider.getCategory(accessToken))) {
+                logger.info("첫번째 에러가 좀 있구요");
                 sendErrorResponse(response, "Invalid or expired access token", HttpServletResponse.SC_UNAUTHORIZED);
                 return false;
             }
         } catch (Exception e) { // 넓은 범위의 예외 처리를 통해 다양한 에러 상황을 처리할 수 있습니다.
+            logger.info("두번 째 401 토큰이 에러가 있습니다.");
             sendErrorResponse(response, "Token validation error", HttpServletResponse.SC_UNAUTHORIZED);
+
             return false;
         }
         return true;
