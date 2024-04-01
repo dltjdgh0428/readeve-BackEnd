@@ -29,6 +29,16 @@ public class JwtFilter extends OncePerRequestFilter {
         //여기서 헤더가 access인
         String accessToken = null;
         Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            // 쿠키가 없음을 처리하는 로직
+            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
+            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
+            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
+            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
+            logger.info("쿠키없다는데? 왜없냐 ㄹㅇ");
+            filterChain.doFilter(request, response);
+            return;
+        }
         for (Cookie cookie : cookies) {
             logger.info("@@@@@@@@@@@@@@@@@@@@@@");
             logger.info("@@@@@@@@@@@@@@@@@@@@@@");
