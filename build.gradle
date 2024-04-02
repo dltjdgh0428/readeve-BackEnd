@@ -42,6 +42,8 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 	//log를 위한 추가
 
+	//Redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	//test를 위한 추가
 	runtimeOnly 'com.h2database:h2'
 
