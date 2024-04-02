@@ -3,6 +3,7 @@ package com.book_everywhere.review.service;
 import com.book_everywhere.book.entity.Book;
 import com.book_everywhere.book.repository.BookRepository;
 import com.book_everywhere.likes.repository.LikesRepository;
+import com.book_everywhere.likes.service.LikesCachingService;
 import com.book_everywhere.pin.entity.Pin;
 import com.book_everywhere.pin.repository.PinRepository;
 import com.book_everywhere.review.entity.Review;
@@ -32,6 +33,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final UserRepository userRepository;
     private final TaggedService taggedService;
     private final LikesRepository likesRepository;
+    private final LikesCachingService likesCachingService;
 
 
     //사용자 검증에 메소드
@@ -74,7 +76,7 @@ public class ReviewServiceImpl implements ReviewService {
         User user = userRepository.findBySocialId(socialId).orElseThrow();
 
         return init.stream().map(review -> {
-            Long likeCount = likesRepository.countByReviewId(review.getId());
+            Long likeCount = likesCachingService.좋아요캐시업데이트(review.getId());
             boolean likeState = likesRepository.existsByUserIdAndReviewId(user.getId(), review.getId());
             return ReviewDto.toDto(review, likeCount, likeState);
         }).toList();
@@ -90,7 +92,7 @@ public class ReviewServiceImpl implements ReviewService {
         User user = userRepository.findBySocialId(socialId).orElseThrow();
 
         return init.stream().map(review -> {
-            Long likeCount = likesRepository.countByReviewId(review.getId());
+            Long likeCount = likesCachingService.좋아요캐시업데이트(review.getId());
             boolean likeState = likesRepository.existsByUserIdAndReviewId(user.getId(), review.getId());
             return ReviewDto.toDto(review, likeCount, likeState);
         }).toList();
@@ -102,7 +104,7 @@ public class ReviewServiceImpl implements ReviewService {
         User user = userRepository.findBySocialId(socialId).orElseThrow();
 
         return init.stream().map(review -> {
-            Long likeCount = likesRepository.countByReviewId(review.getId());
+            Long likeCount = likesCachingService.좋아요캐시업데이트(review.getId());
             boolean likeState = likesRepository.existsByUserIdAndReviewId(user.getId(), review.getId());
             return ReviewDto.toDto(review, likeCount, likeState);
         }).toList();
@@ -115,7 +117,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         Review review = reviewRepository.findById(review_id).orElseThrow(
                 () -> new EntityNotFoundException(CustomErrorCode.REVIEW_NOT_FOUND));
-        Long likeCount = likesRepository.countByReviewId(review.getId());
+        Long likeCount = likesCachingService.좋아요캐시업데이트(review.getId());
         boolean likeState = likesRepository.existsByUserIdAndReviewId(user.getId(), review.getId());
         return ReviewDto.toDto(review, likeCount, likeState);
     }
@@ -128,7 +130,7 @@ public class ReviewServiceImpl implements ReviewService {
         Optional<User> optionalUser = userRepository.findBySocialId(socialId);
 
         return init.stream().map(review -> {
-            Long likeCount = likesRepository.countByReviewId(review.getId());
+            Long likeCount = likesCachingService.좋아요캐시업데이트(review.getId());
             boolean likeState = optionalUser
                     .map(user -> likesRepository.existsByUserIdAndReviewId(user.getId(), review.getId()))
                     .orElse(false);
@@ -143,7 +145,7 @@ public class ReviewServiceImpl implements ReviewService {
         Optional<User> optionalUser = userRepository.findBySocialId(socialId);
 
         return init.stream().map(review -> {
-            Long likeCount = likesRepository.countByReviewId(review.getId());
+            Long likeCount = likesCachingService.좋아요캐시업데이트(review.getId());
             boolean likeState = optionalUser
                     .map(user -> likesRepository.existsByUserIdAndReviewId(user.getId(), review.getId()))
                     .orElse(false);

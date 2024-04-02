@@ -18,12 +18,14 @@ public class LikesServiceImpl implements LikesService {
 
     private final LikesRepository likesRepository;
     private final UserRepository userRepository;
+    private final LikesCachingService likesCachingService;
 
     @Override
     @Transactional
     public void 좋아요(Long socialId, Long review_id) {
         User user = userRepository.findBySocialId(socialId).orElseThrow();
         likesRepository.mLike(user.getId(),review_id);
+        likesCachingService.좋아요캐시무효화(review_id);
     }
 
     @Override
@@ -31,6 +33,7 @@ public class LikesServiceImpl implements LikesService {
     public void 좋아요취소(Long socialId, Long review_id) {
         User user = userRepository.findBySocialId(socialId).orElseThrow();
         likesRepository.mUnLike(user.getId(), review_id);
+        likesCachingService.좋아요캐시무효화(review_id);
     }
 
 }
