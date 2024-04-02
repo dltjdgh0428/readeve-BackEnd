@@ -1,8 +1,6 @@
 package com.book_everywhere.auth.config;
 
-import com.book_everywhere.jwt.filter.CustomLogoutFilter;
 import com.book_everywhere.jwt.filter.JwtFilter;
-import com.book_everywhere.jwt.service.RefreshService;
 import com.book_everywhere.jwt.token.JwtProvider;
 import com.book_everywhere.auth.service.CustomOAuth2UserService;
 import com.book_everywhere.jwt.filter.CustomSuccessHandler;
@@ -14,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
@@ -32,7 +29,6 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
     private final JwtProvider jwtProvider;
-    private final RefreshService refreshService;
 
 
     @Bean
@@ -64,9 +60,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .addFilterAfter(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
-//                .addFilterBefore(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
-                .addFilterBefore(new CustomLogoutFilter(jwtProvider, refreshService), LogoutFilter.class)
+//                .addFilterAfter(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/").permitAll()
                         // 테스트 관련 url

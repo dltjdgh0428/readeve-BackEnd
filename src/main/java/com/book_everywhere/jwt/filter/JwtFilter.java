@@ -15,9 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-
-import static com.book_everywhere.jwt.token.TokenType.ACCESS;
+import java.util.Arrays;
+import java.util.Collections;
 
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
@@ -27,46 +26,59 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //여기서 헤더가 access인
-        String accessToken = request.getHeader(ACCESS.getType());
-        logger.info(request);
+        String authorization = null;
 
-//        String accessToken = null;
-//        Cookie[] cookies = request.getCookies();
-//        if (cookies == null) {
-//            // 쿠키가 없음을 처리하는 로직
-//            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
-            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
-            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
-            logger.info(accessToken);
-//            logger.info("쿠키없다는데? 왜없냐 ㄹㅇ");
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
-//        for (Cookie cookie : cookies) {
-//            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
-//            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
-//            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
-//            logger.info("@@@@@@@@@@@@@@@@@@@@@@");
-//            logger.info(cookie);
-//            if (cookie.getName().equals(ACCESS.getType())) {
-//                accessToken = cookie.getValue();
-//            }
-//        }
+        Cookie[] cookies = request.getCookies();
+        StringBuilder message = new StringBuilder();
+        message.append("Request Method: ").append(request.getMethod())
+                .append(", URL: ").append(request.getRequestURL());
 
-        if (accessToken == null) {
+        // 헤더 정보 로깅
+        Collections.list(request.getHeaderNames()).forEach(headerName ->
+                message.append(", ").append(headerName).append(": ").append(request.getHeader(headerName))
+        );
+
+        // 파라미터 정보 로깅 (선택적)
+        request.getParameterMap().forEach((key, value) ->
+                message.append(", ").append(key).append(": ").append(Arrays.toString(value))
+        );
+
+        logger.info(message.toString());
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                logger.info(cookie.toString());
+                if (cookie.getName().equals("Authorization")) {
+                    authorization = cookie.getValue();
+                }
+            }
+        } else {
+            logger.info("쿠키가 없습니다.");
+        }
+
+        //Authorization 헤더 검증
+        if (authorization == null) {
+            System.out.println("token null");
             filterChain.doFilter(request, response);
+            //조건이 해당되면 메소드 종료 (필수)
             return;
         }
-//
-        if (!validateToken(response, accessToken)) {
-            logger.info("validateToken,validateToken,validateToken");
+
+        //토큰
+        String token = authorization;
+
+        if (jwtProvider.isExpired(token)) {
+
+            System.out.println("token expired");
+            filterChain.doFilter(request, response);
+
+            //조건이 해당되면 메소드 종료 (필수)
             return;
         }
 
         //토큰에서 username과 role 획득
         UserDto userDto = new UserDto();
-        userDto.setNickname(jwtProvider.getUsername(accessToken));
-        userDto.setRole(jwtProvider.getRole(accessToken));
+        userDto.setNickname(jwtProvider.getUsername(authorization));
+        userDto.setRole(jwtProvider.getRole(authorization));
 
         //UserDetails에 회원 정보 객체 담기
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDto);
@@ -79,26 +91,4 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private boolean validateToken(HttpServletResponse response, String accessToken) throws IOException {
-        try {
-            if (jwtProvider.isExpired(accessToken) ) {//|| !ACCESS.getType().equals(jwtProvider.getCategory(accessToken))) {
-                logger.info("첫번째 에러가 좀 있구요");
-                sendErrorResponse(response, "Invalid or expired access token", HttpServletResponse.SC_UNAUTHORIZED);
-                return false;
-            }
-        } catch (Exception e) { // 넓은 범위의 예외 처리를 통해 다양한 에러 상황을 처리할 수 있습니다.
-            logger.info("두번 째 401 토큰이 에러가 있습니다.");
-            sendErrorResponse(response, "Token validation error", HttpServletResponse.SC_UNAUTHORIZED);
-
-            return false;
-        }
-        return true;
-    }
-
-    private void sendErrorResponse(HttpServletResponse response, String message, int status) throws IOException {
-        response.setStatus(status);
-        try (PrintWriter writer = response.getWriter()) {
-            writer.print(message);
-        }
-    }
 }
