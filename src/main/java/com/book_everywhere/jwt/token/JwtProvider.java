@@ -2,8 +2,6 @@ package com.book_everywhere.jwt.token;
 
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.Cookie;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
