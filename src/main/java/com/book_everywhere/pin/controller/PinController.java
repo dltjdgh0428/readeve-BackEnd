@@ -9,8 +9,6 @@ import com.book_everywhere.review.dto.ReviewDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,11 +27,11 @@ public class PinController {
         List<PinDto> result = pinService.전체지도조회();
         return new CMRespDto<>(HttpStatus.OK, result,"전체 지도 조회 성공!");
     }
-    @Operation(summary = "핀+핀의 상위 5개 태그를 함께 조회", description = "전체지도와 그에따른 태그 5개를 조회합니다")
+    @Operation(summary = "핀+핀의 상위 4개 태그를 함께 조회", description = "전체지도와 그에따른 태그 4개를 조회합니다")
     @GetMapping("/api/map/tag/count")
     public CMRespDto<?> allPinWithTagCount() {
-        List<PinWithTagCountRespDto> result = pinService.핀의상위5개태그개수와함께조회();
-        return new CMRespDto<>(HttpStatus.OK, result, "전체 지도 상위 5개 태그와 함께 조회 성공");
+        List<PinWithTagCountRespDto> result = pinService.핀의상위4개태그개수와함께조회();
+        return new CMRespDto<>(HttpStatus.OK, result, "전체 지도 상위 4개 태그와 함께 조회 성공");
     }
 
     @Operation(summary = "핀+핀의 상위 5개 태그를 함께 조회 [공유된것]", description = "공유/개인 핀+핀의 상위 5개 태그를 함께 조회합니다.")
