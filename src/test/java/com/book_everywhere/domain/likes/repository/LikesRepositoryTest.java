@@ -1,18 +1,17 @@
 package com.book_everywhere.domain.likes.repository;
 
-import com.book_everywhere.auth.entity.User;
-import com.book_everywhere.auth.repository.UserRepository;
-import com.book_everywhere.book.entity.Book;
-import com.book_everywhere.book.repository.BookRepository;
+import com.book_everywhere.common.auth.entity.User;
+import com.book_everywhere.common.auth.repository.UserRepository;
+import com.book_everywhere.domain.book.entity.Book;
+import com.book_everywhere.domain.book.repository.BookRepository;
 import com.book_everywhere.domain.auth.UserTestBuilder;
 import com.book_everywhere.domain.book.dto.BookRespDtoBuilder;
 import com.book_everywhere.domain.pin.dto.PinRespDtoTestBuilder;
 import com.book_everywhere.domain.review.dto.ReviewRespDtoTestBuilder;
-import com.book_everywhere.likes.repository.LikesRepository;
-import com.book_everywhere.pin.entity.Pin;
-import com.book_everywhere.pin.repository.PinRepository;
-import com.book_everywhere.review.entity.Review;
-import com.book_everywhere.review.repository.ReviewRepository;
+import com.book_everywhere.domain.pin.entity.Pin;
+import com.book_everywhere.domain.pin.repository.PinRepository;
+import com.book_everywhere.domain.review.entity.Review;
+import com.book_everywhere.domain.review.repository.ReviewRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

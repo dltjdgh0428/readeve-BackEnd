@@ -1,15 +1,14 @@
 package com.book_everywhere.domain.pin.service;
 
-import com.book_everywhere.book.dto.BookRespDto;
+import com.book_everywhere.domain.book.dto.BookRespDto;
 import com.book_everywhere.domain.book.dto.BookRespDtoBuilder;
 import com.book_everywhere.domain.pin.dto.PinRespDtoTestBuilder;
 import com.book_everywhere.domain.review.dto.ReviewRespDtoTestBuilder;
-import com.book_everywhere.pin.dto.PinDto;
-import com.book_everywhere.pin.dto.PinRespDto;
-import com.book_everywhere.pin.entity.Pin;
-import com.book_everywhere.pin.repository.PinRepository;
-import com.book_everywhere.pin.service.PinServiceImpl;
-import com.book_everywhere.review.dto.ReviewRespDto;
+import com.book_everywhere.domain.pin.dto.PinDto;
+import com.book_everywhere.domain.pin.dto.PinRespDto;
+import com.book_everywhere.domain.pin.entity.Pin;
+import com.book_everywhere.domain.pin.repository.PinRepository;
+import com.book_everywhere.domain.review.dto.ReviewRespDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

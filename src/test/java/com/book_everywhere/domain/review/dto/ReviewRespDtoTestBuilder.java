@@ -2,13 +2,12 @@ package com.book_everywhere.domain.review.dto;
 
 import com.book_everywhere.domain.book.dto.BookRespDtoBuilder;
 import com.book_everywhere.domain.pin.dto.PinRespDtoTestBuilder;
-import com.book_everywhere.pin.entity.Pin;
-import com.book_everywhere.book.entity.Book;
-import com.book_everywhere.review.dto.ReviewRespDto;
-import com.book_everywhere.book.dto.BookRespDto;
-import com.book_everywhere.pin.dto.PinRespDto;
-import com.book_everywhere.review.entity.Review;
-import com.book_everywhere.auth.entity.User;
+import com.book_everywhere.domain.pin.entity.Pin;
+import com.book_everywhere.domain.book.entity.Book;
+import com.book_everywhere.domain.book.dto.BookRespDto;
+import com.book_everywhere.domain.pin.dto.PinRespDto;
+import com.book_everywhere.domain.review.entity.Review;
+import com.book_everywhere.common.auth.entity.User;
 
 import java.util.List;
 

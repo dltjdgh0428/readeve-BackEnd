@@ -1,7 +1,6 @@
 package com.book_everywhere.domain.book.dto;
 
-import com.book_everywhere.book.dto.BookRespDto;
-import com.book_everywhere.book.entity.Book;
+import com.book_everywhere.domain.book.entity.Book;
 
 public class BookRespDtoBuilder {
 
