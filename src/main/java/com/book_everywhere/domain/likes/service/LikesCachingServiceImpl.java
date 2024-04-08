@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,7 @@ public class LikesCachingServiceImpl implements LikesCachingService {
     @Override
     @Cacheable(value = "likesCount", key = "#reviewId")
     public Long 좋아요캐시업데이트(Long reviewId) {
-        logger.info(reviewId+"의 캐시가 없데이트 되었습니다.");
+        logger.info(reviewId+"의 캐시가 업데이트 되었습니다.");
         return likesRepository.countByReviewId(reviewId);
     }
 

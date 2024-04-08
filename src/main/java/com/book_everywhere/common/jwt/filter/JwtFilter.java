@@ -29,21 +29,6 @@ public class JwtFilter extends OncePerRequestFilter {
         String authorization = null;
 
         Cookie[] cookies = request.getCookies();
-        StringBuilder message = new StringBuilder();
-        message.append("Request Method: ").append(request.getMethod())
-                .append(", URL: ").append(request.getRequestURL());
-
-        // 헤더 정보 로깅
-        Collections.list(request.getHeaderNames()).forEach(headerName ->
-                message.append(", ").append(headerName).append(": ").append(request.getHeader(headerName))
-        );
-
-        // 파라미터 정보 로깅 (선택적)
-        request.getParameterMap().forEach((key, value) ->
-                message.append(", ").append(key).append(": ").append(Arrays.toString(value))
-        );
-
-        logger.info(message.toString());
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 logger.info(cookie.toString());

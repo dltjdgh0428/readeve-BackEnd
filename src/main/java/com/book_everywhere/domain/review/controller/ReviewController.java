@@ -1,6 +1,5 @@
 package com.book_everywhere.domain.review.controller;
 
-
 import com.book_everywhere.domain.book.service.BookService;
 import com.book_everywhere.domain.likes.service.LikesService;
 import com.book_everywhere.domain.pin.service.PinService;
@@ -58,21 +57,21 @@ public class ReviewController {
     //공개 독후감 조회
     @Operation(summary = "모든 독후감 조회", description = "조건에 없이 모든 독후감을 조회합니다 return = List<ReviewDto>")
     @GetMapping("/api/reviews")
-    public CMRespDto<?> publicReviews(@RequestParam Long socialId) {
+    public CMRespDto<?> publicReviews(@RequestParam(value = "socialId") Long socialId) {
         List<ReviewDto> result = reviewService.모든독후감조회(socialId);
         return new CMRespDto<>(HttpStatus.OK, result, "전체 공유 독후감 조회");
     }
 
     @Operation(summary = "모든 공유 독후감 조회", description = "공유 독후감을 조회합니다 return = List<ReviewDto>")
     @GetMapping("/api/review/public")
-    public CMRespDto<?> findPublicReviews(@RequestParam Long socialId) {
+    public CMRespDto<?> findPublicReviews(@RequestParam(value = "socialId") Long socialId) {
         List<ReviewDto> result = reviewService.모든공유독후감조회(socialId);
         return new CMRespDto<>(HttpStatus.OK, result, "모든 공유 독후감 조회 완료");
     }
 
     @Operation(summary = "단일 책 독후감 조회", description = "단일 책 독후감을 조회합니다 return = List<ReviewDto>")
     @GetMapping("/api/detail/{bookId}")
-    public CMRespDto<?> bookReviews(@RequestParam Long socialId, @PathVariable Long bookId) {
+    public CMRespDto<?> bookReviews(@RequestParam(value = "socialId") Long socialId, @PathVariable Long bookId) {
         List<ReviewDto> result = reviewService.책에따른모든리뷰(socialId, bookId);
         return new CMRespDto<>(HttpStatus.OK, result, "책에 따른 전체 독후감 조회");
     }
@@ -80,7 +79,7 @@ public class ReviewController {
     //수정
     @Operation(summary = "단일 독후감 조회", description = "특정 독후감을 조회합니다 return = ReviewDto")
     @GetMapping("/api/review/{reviewId}")
-    public CMRespDto<?> getReview(@RequestParam Long socialId, @PathVariable Long reviewId) {
+    public CMRespDto<?> getReview(@RequestParam(value = "socialId") Long socialId, @PathVariable Long reviewId) {
         ReviewDto reviewDto = reviewService.단일독후감조회(socialId, reviewId);
         return new CMRespDto<>(HttpStatus.OK, reviewDto, "단일 독후감 조회");
     }

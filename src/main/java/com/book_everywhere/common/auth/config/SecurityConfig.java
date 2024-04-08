@@ -62,10 +62,9 @@ public class SecurityConfig {
 //                .addFilterAfter(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(new JwtFilter(jwtProvider), OAuth2LoginAuthenticationFilter.class)
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-
                         .requestMatchers("/").permitAll()
                         // 테스트 관련 url
-                        .requestMatchers("/api/**").permitAll()
+//                        .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/health", "/env", "/test/**", "/swagger-ui/**").permitAll()
                         .requestMatchers("/api/reviews").permitAll()
                         // 비회원도 볼수있는 url
