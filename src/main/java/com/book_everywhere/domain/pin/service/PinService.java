@@ -11,7 +11,7 @@ public interface PinService {
 
     void 핀생성(ReviewRespDto reviewRespDto);
 
-    List<PinWithTagCountRespDto> 핀의상위5개태그개수와함께조회();
+    List<PinWithTagCountRespDto> 핀의상위4개태그개수와함께조회();
 
     List<PinDto> 태그조회(String content);
 

@@ -62,7 +62,7 @@ public class PinServiceImpl implements PinService {
     }
 
 
-    public List<PinWithTagCountRespDto> 핀의상위5개태그개수와함께조회() {
+    public List<PinWithTagCountRespDto> 핀의상위4개태그개수와함께조회() {
         List<Pin> pins = pinRepository.findAll();
 
         return pins.stream().map(pin -> {
