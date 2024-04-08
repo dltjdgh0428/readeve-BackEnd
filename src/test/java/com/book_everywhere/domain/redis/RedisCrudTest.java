@@ -1,6 +1,6 @@
 package com.book_everywhere.domain.redis;
 
-import com.book_everywhere.redis.RedisService;
+import com.book_everywhere.common.redis.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
