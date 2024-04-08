@@ -1,8 +1,6 @@
 package com.book_everywhere.domain.pin.dto;
 
-import com.book_everywhere.book.entity.Book;
-import com.book_everywhere.pin.dto.PinRespDto;
-import com.book_everywhere.pin.entity.Pin;
+import com.book_everywhere.domain.pin.entity.Pin;
 
 public class PinRespDtoTestBuilder {
     public static PinRespDto createDefault() {
