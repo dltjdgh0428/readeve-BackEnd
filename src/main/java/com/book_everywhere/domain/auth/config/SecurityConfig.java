@@ -1,6 +1,6 @@
-package com.book_everywhere.common.auth.config;
+package com.book_everywhere.domain.auth.config;
 
-import com.book_everywhere.common.auth.service.CustomOAuth2UserService;
+import com.book_everywhere.domain.auth.service.CustomOAuth2UserService;
 import com.book_everywhere.common.jwt.filter.JwtFilter;
 import com.book_everywhere.common.jwt.token.JwtProvider;
 import com.book_everywhere.common.jwt.filter.CustomSuccessHandler;

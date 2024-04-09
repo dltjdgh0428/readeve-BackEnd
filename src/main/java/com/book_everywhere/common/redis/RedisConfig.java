@@ -13,6 +13,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @RequiredArgsConstructor
 @Configuration
 @EnableRedisRepositories
+//@EnableJpaRepositories(basePackages = "com.book_everywhere.common.auth.repository")
+//@EnableRedisRepositories(basePackages = "com.book_everywhere.common.cache.repository")
 public class RedisConfig {
 
 //    private static final Logger logger = LoggerFactory.getLogger(RedisConfig.class);

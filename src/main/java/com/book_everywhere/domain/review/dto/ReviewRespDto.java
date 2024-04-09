@@ -2,7 +2,7 @@ package com.book_everywhere.domain.review.dto;
 
 import com.book_everywhere.domain.book.dto.BookRespDto;
 import com.book_everywhere.domain.book.entity.Book;
-import com.book_everywhere.common.auth.entity.User;
+import com.book_everywhere.domain.auth.entity.User;
 import com.book_everywhere.domain.pin.dto.PinRespDto;
 import com.book_everywhere.domain.pin.entity.Pin;
 import com.book_everywhere.domain.review.entity.Review;

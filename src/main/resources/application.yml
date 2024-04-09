@@ -6,6 +6,11 @@ spring:
       blue: blue, common, secret
       green: green, common, secret
 
+  data:
+    redis:
+      repositories:
+      enabled: false
+
 server:
   env: blue
 

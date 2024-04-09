@@ -1,4 +1,4 @@
-package com.book_everywhere.common.auth.entity;
+package com.book_everywhere.domain.auth.entity;
 
 public enum Role {
     ROLE_ADMIN,ROLE_MEMBER

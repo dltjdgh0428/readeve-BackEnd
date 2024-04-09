@@ -1,7 +1,7 @@
 package com.book_everywhere.domain.likes.service;
 
-import com.book_everywhere.common.auth.entity.User;
-import com.book_everywhere.common.auth.repository.UserRepository;
+import com.book_everywhere.domain.auth.entity.User;
+import com.book_everywhere.domain.auth.repository.UserRepository;
 import com.book_everywhere.domain.likes.repository.LikesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

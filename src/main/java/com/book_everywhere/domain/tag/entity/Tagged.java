@@ -2,7 +2,7 @@ package com.book_everywhere.domain.tag.entity;
 
 import com.book_everywhere.common.entity.BaseTimeEntity;
 import com.book_everywhere.domain.pin.entity.Pin;
-import com.book_everywhere.common.auth.entity.User;
+import com.book_everywhere.domain.auth.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

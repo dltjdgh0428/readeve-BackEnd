@@ -1,8 +1,8 @@
 package com.book_everywhere.domain.auth;
 
 
-import com.book_everywhere.common.auth.entity.Role;
-import com.book_everywhere.common.auth.entity.User;
+import com.book_everywhere.domain.auth.entity.Role;
+import com.book_everywhere.domain.auth.entity.User;
 
 import java.util.ArrayList;
 

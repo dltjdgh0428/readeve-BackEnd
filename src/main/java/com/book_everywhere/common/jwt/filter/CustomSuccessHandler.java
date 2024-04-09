@@ -1,6 +1,6 @@
 package com.book_everywhere.common.jwt.filter;
 
-import com.book_everywhere.common.auth.dto.CustomOAuth2User;
+import com.book_everywhere.domain.auth.dto.CustomOAuth2User;
 import com.book_everywhere.common.jwt.token.JwtProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

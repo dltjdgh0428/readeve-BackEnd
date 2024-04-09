@@ -1,7 +1,7 @@
 package com.book_everywhere.common.jwt.filter;
 
-import com.book_everywhere.common.auth.dto.CustomOAuth2User;
-import com.book_everywhere.common.auth.dto.UserDto;
+import com.book_everywhere.domain.auth.dto.CustomOAuth2User;
+import com.book_everywhere.domain.auth.dto.UserDto;
 import com.book_everywhere.common.jwt.token.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,8 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
 
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {

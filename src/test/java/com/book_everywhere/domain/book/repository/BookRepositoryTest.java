@@ -1,7 +1,7 @@
 package com.book_everywhere.domain.book.repository;
 
-import com.book_everywhere.common.auth.entity.User;
-import com.book_everywhere.common.auth.repository.UserRepository;
+import com.book_everywhere.domain.auth.entity.User;
+import com.book_everywhere.domain.auth.repository.UserRepository;
 import com.book_everywhere.domain.book.entity.Book;
 import com.book_everywhere.domain.auth.UserTestBuilder;
 import com.book_everywhere.domain.book.dto.BookRespDtoBuilder;
