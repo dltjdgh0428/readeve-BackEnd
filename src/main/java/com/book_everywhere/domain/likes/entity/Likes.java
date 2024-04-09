@@ -1,6 +1,6 @@
 package com.book_everywhere.domain.likes.entity;
 
-import com.book_everywhere.common.auth.entity.User;
+import com.book_everywhere.domain.auth.entity.User;
 import com.book_everywhere.common.entity.BaseTimeEntity;
 import com.book_everywhere.domain.review.entity.Review;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

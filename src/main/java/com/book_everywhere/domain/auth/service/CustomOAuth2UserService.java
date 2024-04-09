@@ -1,11 +1,11 @@
-package com.book_everywhere.common.auth.service;
+package com.book_everywhere.domain.auth.service;
 
-import com.book_everywhere.common.auth.dto.CustomOAuth2User;
-import com.book_everywhere.common.auth.dto.OAuthAttributes;
-import com.book_everywhere.common.auth.dto.UserDto;
-import com.book_everywhere.common.auth.entity.Role;
-import com.book_everywhere.common.auth.entity.User;
-import com.book_everywhere.common.auth.repository.UserRepository;
+import com.book_everywhere.domain.auth.dto.CustomOAuth2User;
+import com.book_everywhere.domain.auth.dto.OAuthAttributes;
+import com.book_everywhere.domain.auth.dto.UserDto;
+import com.book_everywhere.domain.auth.entity.Role;
+import com.book_everywhere.domain.auth.entity.User;
+import com.book_everywhere.domain.auth.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

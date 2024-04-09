@@ -1,4 +1,4 @@
-package com.book_everywhere.common.auth.entity;
+package com.book_everywhere.domain.auth.entity;
 
 import com.book_everywhere.common.entity.BaseTimeEntity;
 import com.book_everywhere.domain.review.entity.Review;

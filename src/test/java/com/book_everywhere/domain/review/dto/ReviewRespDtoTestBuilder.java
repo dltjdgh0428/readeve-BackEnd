@@ -7,7 +7,7 @@ import com.book_everywhere.domain.book.entity.Book;
 import com.book_everywhere.domain.book.dto.BookRespDto;
 import com.book_everywhere.domain.pin.dto.PinRespDto;
 import com.book_everywhere.domain.review.entity.Review;
-import com.book_everywhere.common.auth.entity.User;
+import com.book_everywhere.domain.auth.entity.User;
 
 import java.util.List;
 

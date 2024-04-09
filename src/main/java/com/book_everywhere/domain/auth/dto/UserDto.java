@@ -1,4 +1,4 @@
-package com.book_everywhere.common.auth.dto;
+package com.book_everywhere.domain.auth.dto;
 
 
 import lombok.Data;
