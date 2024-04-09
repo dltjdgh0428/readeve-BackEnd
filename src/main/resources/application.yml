@@ -9,7 +9,7 @@ spring:
   data:
     redis:
       repositories:
-      enabled: false
+        enabled: false
     jpa:
       repositories:
         bootstrap-mode: deferred
