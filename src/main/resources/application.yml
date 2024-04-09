@@ -10,6 +10,9 @@ spring:
     redis:
       repositories:
       enabled: false
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
 
 server:
   env: blue
