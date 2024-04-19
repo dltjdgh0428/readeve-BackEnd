@@ -9,10 +9,8 @@ spring:
   data:
     redis:
       repositories:
-      enabled: false
-    jpa:
-      repositories:
-        bootstrap-mode: deferred
+        enabled: false
+
 
 server:
   env: blue
@@ -116,6 +114,7 @@ logging:
     org:
       springframework:
         security: DEBUG
+        cache: DEBUG
       hibernate:
         type: trace
 
