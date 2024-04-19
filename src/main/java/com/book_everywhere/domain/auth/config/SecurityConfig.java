@@ -64,14 +64,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/").permitAll()
                         // 테스트 관련 url
-                        .requestMatchers("/api/**").permitAll()
+//                        .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/health", "/env", "/test/**", "/swagger-ui/**").permitAll()
                         .requestMatchers("/api/reviews").permitAll()
                         // 비회원도 볼수있는 url
                         .requestMatchers("/api/review", "/api/map", "/api/tags", "/api/data/**").permitAll()
                         // 나머지
 //                        .requestMatchers("/api/**").hasAuthority("ROLE_MEMBER")
-//                        .anyRequest().authenticated()
+                        .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2Login ->
                         oauth2Login
