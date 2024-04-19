@@ -116,5 +116,5 @@ logging:
         security: DEBUG
         cache: DEBUG
       hibernate:
-        type: trace
+        type: DEBUG
 
