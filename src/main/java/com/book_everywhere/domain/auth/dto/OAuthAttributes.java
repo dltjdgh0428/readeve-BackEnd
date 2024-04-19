@@ -14,7 +14,7 @@ import java.util.Map;
 public class OAuthAttributes {
     private Map<String, Object> attributes;
     private String nameAttributeKey;
-    private long socialId;
+    private Long socialId;
     private String nickname;
     private String image;
     private Role role;

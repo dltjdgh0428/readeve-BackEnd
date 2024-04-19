@@ -38,15 +38,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        logger.info("registrationId: {}", registrationId);
-        logger.info("userNameAttributeName: {}", userNameAttributeName);
-        logger.info("attributes: {}", attributes);
+
+        logger.info("attributes: {}", attributes.getSocialId());
 
         User user = saveOrUpdate(attributes);
         httpSession.setAttribute("user", user);
         UserDto userDto = new UserDto();
         userDto.setNickname(user.getNickname());
         userDto.setRole(String.valueOf(user.getRole()));
+        userDto.setSocialId(attributes.getSocialId());
 
         return new CustomOAuth2User(userDto);
     }
