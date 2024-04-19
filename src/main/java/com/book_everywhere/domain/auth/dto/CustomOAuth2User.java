@@ -1,6 +1,7 @@
 package com.book_everywhere.domain.auth.dto;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
@@ -40,7 +41,6 @@ public class CustomOAuth2User implements OAuth2User {
     public String getName() {
         return userDto.getNickname();
     }
-
 
 
 }
