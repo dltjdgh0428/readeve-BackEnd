@@ -1,8 +1,14 @@
 package com.book_everywhere.domain.follow.service;
 
+import com.book_everywhere.domain.follow.dto.SubscribeRespDto;
+
+import java.util.List;
+
 public interface SubscribeService {
 
-    int 구독하기(Long fromUserId, Long toUserId);
+    void 구독하기(Long fromUserSocialId, Long toUserSocialId);
 
-    int 구독취소(Long fromUserId, Long toUserId);
+    void 구독취소(Long fromUserSocialId, Long toUserSocialId);
+
+    List<SubscribeRespDto> 구독리스트(Long fromUserSocialId, Long pageUserSocialId);
 }

@@ -27,14 +27,16 @@ public class Subscribe extends BaseTimeEntity {
     @Column(name = "subscribe_id")
     private Long id;
 
+    @JoinColumn(name = "from_user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User fromUser;  // 팔로우 하는 사람
 
-    @JoinColumn(name = "fromUserId")
-    @ManyToOne
-    private User fromUser;  // ~~로부터
+    @JoinColumn(name = "to_user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User toUser; // 팔로우 당하는 사람
 
-
-    @JoinColumn(name = "toUserId")
-    @ManyToOne
-    private User toUser; // ~~를
-
+    public Subscribe(User fromUser, User toUser){
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+    }
 }
