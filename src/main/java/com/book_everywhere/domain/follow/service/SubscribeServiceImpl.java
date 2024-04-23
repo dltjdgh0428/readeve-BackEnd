@@ -28,6 +28,16 @@ public class SubscribeServiceImpl implements SubscribeService{
         User pageUser = userRepository.findBySocialId(pageUserSocialId)
                 .orElseThrow(() -> new IllegalArgumentException("구독 받는 사용자를 찾을 수 없습니다. SocialID: " + pageUserSocialId));
 
+        return subscribeRepository.findSubscriptionsByPageUserId(fromUser.getId(), pageUser.getId());
+    }
+
+    @Override
+    public List<SubscribeRespDto> 구독자리스트(Long fromUserSocialId, Long pageUserSocialId) {
+        User fromUser = userRepository.findBySocialId(fromUserSocialId)
+                .orElseThrow(() -> new IllegalArgumentException("구독하는 사용자를 찾을 수 없습니다. SocialID: " + fromUserSocialId));
+        User pageUser = userRepository.findBySocialId(pageUserSocialId)
+                .orElseThrow(() -> new IllegalArgumentException("구독 받는 사용자를 찾을 수 없습니다. SocialID: " + pageUserSocialId));
+
         return subscribeRepository.findSubscribersByPageUserId(fromUser.getId(), pageUser.getId());
     }
     @Override

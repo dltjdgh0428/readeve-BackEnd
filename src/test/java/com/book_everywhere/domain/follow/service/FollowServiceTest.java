@@ -48,7 +48,7 @@ public class FollowServiceTest {
         subscribeService.구독하기(toUserTest2.getSocialId(), toUserTest.getSocialId());
 
         //when
-        List<SubscribeRespDto> subscriptions = subscribeService.구독리스트(fromUserTest.getSocialId(), toUserTest.getSocialId());
+        List<SubscribeRespDto> subscriptions = subscribeService.구독자리스트(fromUserTest.getSocialId(), toUserTest.getSocialId());
 
         //then
         assertThat(subscriptions).hasSize(2);
@@ -66,7 +66,7 @@ public class FollowServiceTest {
         subscribeService.구독취소(fromUserTest.getSocialId(), toUserTest.getSocialId());
 
         // 구독 취소 확인
-        List<SubscribeRespDto> subscriptions = subscribeService.구독리스트(fromUserTest.getSocialId(), toUserTest.getSocialId());
+        List<SubscribeRespDto> subscriptions = subscribeService.구독자리스트(fromUserTest.getSocialId(), toUserTest.getSocialId());
         assertThat(subscriptions).isEmpty();
     }
 

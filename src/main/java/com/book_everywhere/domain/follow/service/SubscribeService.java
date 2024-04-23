@@ -10,5 +10,7 @@ public interface SubscribeService {
 
     void 구독취소(Long fromUserSocialId, Long toUserSocialId);
 
+    List<SubscribeRespDto> 구독자리스트(Long fromUserSocialId, Long pageUserSocialId);
+
     List<SubscribeRespDto> 구독리스트(Long fromUserSocialId, Long pageUserSocialId);
 }
