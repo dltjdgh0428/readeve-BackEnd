@@ -44,5 +44,4 @@ public class CustomOAuth2User implements OAuth2User {
     public Long getSocialId(){
         return userDto.getSocialId();
     }
-
 }

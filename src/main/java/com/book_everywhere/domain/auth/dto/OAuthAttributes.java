@@ -25,7 +25,7 @@ public class OAuthAttributes {
 
     private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
         Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
-        long socialId = ((Number) attributes.get(userNameAttributeName)).longValue(); // Change this line
+        Long socialId = ((Number) attributes.get(userNameAttributeName)).longValue(); // Change this line
 
 
         return OAuthAttributes.builder()
